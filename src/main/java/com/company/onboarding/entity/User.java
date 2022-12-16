@@ -1,9 +1,11 @@
 package com.company.onboarding.entity;
 
+import io.jmix.core.FileRef;
 import io.jmix.core.HasTimeZone;
 import io.jmix.core.annotation.Secret;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.SystemLevel;
+import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
@@ -12,8 +14,10 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @JmixEntity
@@ -64,8 +68,43 @@ public class User implements JmixUserDetails, HasTimeZone {
     @Column(name = "ONBOARDING_STATUS")
     private Integer onboardingStatus;
 
+    @OrderBy("sortValue")
+    @Composition
+    @OneToMany(mappedBy = "user")
+    private List<UserStep> steps;
+
+    @Column(name = "JOINING_DATE")
+    private LocalDate joiningDate;
+
+    @Column(name = "PICTURE", length = 1024)
+    private FileRef picture;
+
     @Transient
     protected Collection<? extends GrantedAuthority> authorities;
+
+    public FileRef getPicture() {
+        return picture;
+    }
+
+    public void setPicture(FileRef picture) {
+        this.picture = picture;
+    }
+
+    public LocalDate getJoiningDate() {
+        return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+        this.joiningDate = joiningDate;
+    }
+
+    public List<UserStep> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<UserStep> steps) {
+        this.steps = steps;
+    }
 
     public Department getDepartment() {
         return department;

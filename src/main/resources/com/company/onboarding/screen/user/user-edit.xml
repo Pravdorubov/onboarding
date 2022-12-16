@@ -6,9 +6,13 @@
         <instance id="userDc"
                   class="com.company.onboarding.entity.User">
             <fetchPlan extends="_base">
-                <property name="department" fetchPlan="_base"/>
+                <property fetchPlan="_base" name="department"/>
+                <property fetchPlan="_base" name="steps">
+                    <property name="step" fetchPlan="_base"/>
+                </property>
             </fetchPlan>
             <loader/>
+            <collection id="stepsDc" property="steps"/>
         </instance>
         <collection id="departmentsDc" class="com.company.onboarding.entity.Department">
             <fetchPlan extends="_base"/>
@@ -54,8 +58,29 @@
                 <checkBox id="activeField" property="active"/>
                 <comboBox id="onboardingStatusField" property="onboardingStatus"/>
                 <entityComboBox id="departmentField" property="department" optionsContainer="departmentsDc"/>
+                <dateField id="joiningDateField" property="joiningDate"/>
+            </column>
+            <column>
+                <fileStorageUpload id="pictureField" property="picture"/>
+                <image id="image" property="picture"
+                       scaleMode="CONTAIN"
+                       rowspan="10" caption=""
+                       height="200" width="200" />
             </column>
         </form>
+        <groupBox id="stepsBox" caption="msg://com.company.onboarding.entity/User.steps">
+            <table id="stepsTable" dataContainer="stepsDc" width="100%" height="200px">
+                <columns>
+                    <column id="comleted" caption="" width="50px"/>
+                    <column id="step.name"/>
+                    <column id="dueDate"/>
+                    <column id="comletedDate"/>
+                </columns>
+                <buttonsPanel>
+                    <button id="generateButton" caption="Generate"/>
+                </buttonsPanel>
+            </table>
+        </groupBox>
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>

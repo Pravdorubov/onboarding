@@ -1,0 +1,12 @@
+@import "hellium-ext-defaults";
+@import "addons";
+@import "hellium-ext";
+
+.hellium-ext {
+  @include addons;
+  @include hellium-ext;
+
+  .overdue-step {
+    color: red;
+  }
+}
